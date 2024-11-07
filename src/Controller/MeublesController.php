@@ -2,9 +2,9 @@
 // src/Controller/MeublesController.php
 namespace App\Controller;
 
-// ...
-use App\Entity\Meubles;
-use Doctrine\ORM\EntityManagerInterface;
+// les require
+use App\Entity\Meubles; //la table meubles
+use Doctrine\ORM\EntityManagerInterface; //gestionnaire de db
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -38,12 +38,16 @@ class MeublesController extends AbstractController
 
     // modifier les données d'une entrée en DB
     #[Route('/change-meubles/{id}', name: 'modify_meubles')]
-    public function modify_meubles (EntityManagerInterface $entityManager, Request $request, string $id): Response 
+    public function modify_meubles (EntityManagerInterface $entityManager, string $id): Response 
     {
-        // $id = $request->request->get('id');
-        // dd($id);
+        $meuble = $entityManager->getRepository(Meubles::class)->find($id);
+
+        // Vérifier si l'entité existe
+        if (!$meuble) {
+            return new Response('Meuble non trouvé', Response::HTTP_NOT_FOUND);
+        }
         
-        $meuble = new Meubles;
+        // Valeurs à modifier pour le formulaire 
         $meuble->getId($id);
         $meuble->setType('meuble retest');
         $meuble->setPrix(665);
@@ -53,15 +57,23 @@ class MeublesController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response(''.$meuble->getId().'modifié');
+        return new Response('Meuble '.$meuble->getId().' modifié');
     }
 
     // effacer une entrée en DB
     #[Route('/remove-meubles/{id}', name: 'remove_meubles')]
-    public function remove_meubles (EntityManagerInterface $entityManager): Response
+    public function remove_meubles (EntityManagerInterface $entityManager, string $id): Response
     {
-        $meuble->getId();
+        $meuble = $entityManager->getRepository(Meubles::class)->find($id);
+
+        // Vérifier si l'entité existe
+        if (!$meuble) {
+            return new Response('Meuble non trouvé', Response::HTTP_NOT_FOUND);
+        }
+
         $entityManager->remove($meuble);
         $entityManager->flush();
+
+        return new Response('Meuble '.$meuble->getId().' supprimé');
     }
 }
