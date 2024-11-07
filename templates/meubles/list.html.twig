@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des meubles{% endblock %}
+
+{% block body %}
+{% if meubles is not empty %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Prix</th>
+                <th>Couleur</th>
+                <th>Matière</th>
+                <th>Dimensions</th>
+                <th>Photos</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meuble in meubles %}
+                <tr>
+                    <td>{{ meuble.id }}</td>
+                    <td>{{ meuble.type }}</td>
+                    <td>{{ meuble.prix }}€</td>
+                    <td>{{ meuble.couleur }}</td>
+                    <td>{{ meuble.matiere }}</td>
+                    <td>{{ meuble.dimensions }}</td>
+                    <td><img src="{{ absolute_url(asset(meuble.photos)) }}" height=200 alt="Photo de {# {{ meuble.type }} en {{ meuble.matière }} {{ meuble.couleur }} #}"/></td>
+                    <td>
+                        <a href="{{ path('modify_meubles', {'id': meuble.id}) }}">Modifier</a>
+                        <a href="{{ path('remove_meubles', {'id': meuble.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Aucun meuble trouvé.</p>
+{% endif %}
+{% endblock %}

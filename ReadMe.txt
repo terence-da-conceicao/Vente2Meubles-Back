@@ -1,0 +1,7 @@
+- si problème avec mdp mysql : mysqladmin -u root -p password puis "enter" et nouveau pass = root, à la base ça semble être root/password
+- modif serveur mysql dans vendore/.env
+- pour conversion json, ajouter : composer require symfony/serializer
+- fichiers CRUD dans src/controller
+- structure des tables dans src/entity
+- entités gérées en attributes donc notées "#[]"
+- images dans public/images

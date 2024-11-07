@@ -10,11 +10,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\MeublesRepository;
-use Symfony\Component\HttpFoundation\Request;
+//use Symfony\Component\HttpFoundation\Request;
 
 
 class MeublesController extends AbstractController
 {
+    #[Route('/meubles', name: 'meubles_list')] // La route pour afficher la liste des meubles depuis la BDD
+public function listMeubles(MeublesRepository $meublesRepository): Response
+{
+    // Récupérer tous les meubles de la base de données
+    $meubles = $meublesRepository->findAll(); // findAll() est une méthode de la classe Repository qui renvoie tous les meubles
+
+    // Renvoyer à une vue Twig (une page HTML) pour afficher la liste des meubles
+    return $this->render('meubles/list.html.twig', [
+        'meubles' => $meubles
+    ]);
+}
+
+
     // remplir la table meubles de la DB, pour le moment avec des données en dur
     #[Route('/add-meubles', name: 'create_meubles')]
     public function create_meubles(EntityManagerInterface $entityManager): Response
@@ -25,7 +38,7 @@ class MeublesController extends AbstractController
         $meuble->setCouleur('couleur');
         $meuble->setMatiere('matière');
         $meuble->setDimensions('X x Y x Z');
-
+        $meuble->setPhotos('images/meuble-de-cuisine-2-portes-2-tiroirs-manguier-grand-tiroir.webp');
 
         // tell Doctrine you want to (eventually) save the meubles (no queries yet)
         $entityManager->persist($meuble);
@@ -38,8 +51,9 @@ class MeublesController extends AbstractController
 
     // modifier les données d'une entrée en DB
     #[Route('/change-meubles/{id}', name: 'modify_meubles')]
-    public function modify_meubles (EntityManagerInterface $entityManager, string $id): Response 
-    {
+    public function modify_meubles (EntityManagerInterface $entityManager, int $id): Response 
+    {   
+        // trouver la bonne id
         $meuble = $entityManager->getRepository(Meubles::class)->find($id);
 
         // Vérifier si l'entité existe
@@ -49,11 +63,12 @@ class MeublesController extends AbstractController
         
         // Valeurs à modifier pour le formulaire 
         $meuble->getId($id);
-        $meuble->setType('meuble retest');
-        $meuble->setPrix(665);
-        $meuble->setCouleur('blouge');
-        $meuble->setMatiere('spectrale');
-        $meuble->setDimensions('1 x 1 x 1');
+        $meuble->setType('bureau');
+        $meuble->setPrix(667);
+        $meuble->setCouleur('bois');
+        $meuble->setMatiere('bois');
+        $meuble->setDimensions('120 x 50 x 70');
+        $meuble->setPhotos('images/pexels-pnw-prod-8250979.jpg');
 
         $entityManager->flush();
 
@@ -62,15 +77,15 @@ class MeublesController extends AbstractController
 
     // effacer une entrée en DB
     #[Route('/remove-meubles/{id}', name: 'remove_meubles')]
-    public function remove_meubles (EntityManagerInterface $entityManager, string $id): Response
+    public function remove_meubles (EntityManagerInterface $entityManager, int $id): Response
     {
         $meuble = $entityManager->getRepository(Meubles::class)->find($id);
 
-        // Vérifier si l'entité existe
         if (!$meuble) {
             return new Response('Meuble non trouvé', Response::HTTP_NOT_FOUND);
         }
 
+        // supprime une entrée
         $entityManager->remove($meuble);
         $entityManager->flush();
 
