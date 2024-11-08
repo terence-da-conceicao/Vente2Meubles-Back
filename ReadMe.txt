@@ -5,3 +5,4 @@
 - structure des tables dans src/entity
 - entités gérées en attributes donc notées "#[]"
 - images dans public/images
+- composant à installer pour les mots de passe : composer require symfony/password-hasher
