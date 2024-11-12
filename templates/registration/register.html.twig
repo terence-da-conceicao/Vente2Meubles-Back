@@ -1,0 +1,19 @@
+<h1>Inscription</h1>
+
+<form action="{{ path('app_register') }}" method="post">
+    {{ form_start(registrationForm) }}
+    
+    <div>
+        <label for="email">Email</label>
+        {{ form_widget(registrationForm.email) }}
+    </div>
+    
+    <div>
+        <label for="password">Mot de passe</label>
+        {{ form_widget(registrationForm.password) }}
+    </div>
+    
+    <button type="submit">S'inscrire</button>
+    
+    {{ form_end(registrationForm) }}
+</form>
