@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Formulaire\EnregistrementFormulaire;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ class InscriptionController extends AbstractController
         $user = new User();
         
         // Crée le formulaire d'inscription
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(EnregistrementFormulaire::class, $user);
         
         // Gère la soumission du formulaire
         $form->handleRequest($request);
