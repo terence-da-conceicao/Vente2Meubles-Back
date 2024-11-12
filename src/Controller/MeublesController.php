@@ -29,7 +29,7 @@ public function listMeubles(MeublesRepository $meublesRepository): Response
 
 
     // 1. Ajouter un meuble à la base de données
-    #[Route('/add-meubles', name: 'create_meubles', methods: ['POST'])] // La route pour ajouter un meuble avec méthode POST
+    #[Route('/add-meubles', name: 'create_meubles', methods: ['POST', 'GET'])] // La route pour ajouter un meuble avec méthode POST
     public function create_meubles(EntityManagerInterface $entityManager): JsonResponse // La fonction pour ajouter un meuble
     {
         // On crée une nouvelle instance de l'entité Meubles
@@ -58,7 +58,7 @@ public function listMeubles(MeublesRepository $meublesRepository): Response
             'couleur' => $meuble->getCouleur(), // Couleur du meuble
             'matiere' => $meuble->getMatiere(), // Matière du meuble
             'dimensions' => $meuble->getDimensions(), // Dimensions du meuble
-            'iamges' => $meuble->getPhotos(), // Image(s) du meuble
+            'images' => $meuble->getPhotos(), // Image(s) du meuble
         ], Response::HTTP_CREATED); // On retourne le statut HTTP 201 (créé)
     }
 
