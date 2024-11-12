@@ -16,13 +16,14 @@ class MeublesController extends AbstractController
 {
 
 #[Route('/meubles', name: 'meubles_list')] // La route pour afficher la liste des meubles depuis la BDD
-public function listMeubles(MeublesRepository $meublesRepository): Response
+public function listMeubles(MeublesRepository $meublesRepository): JsonResponse
 {
     // Récupérer tous les meubles de la base de données
     $meubles = $meublesRepository->findAll(); // findAll() est une méthode de la classe Repository qui renvoie tous les meubles
 
     // Renvoyer à une vue Twig (une page HTML) pour afficher la liste des meubles
-    return $this->render('meubles/list.html.twig', [
+    return $this->json ( 
+    [
         'meubles' => $meubles
     ]);
 }
@@ -63,7 +64,7 @@ public function listMeubles(MeublesRepository $meublesRepository): Response
     }
 
     // 2. Modifier un meuble existant
-    #[Route('/change-meubles/{id}', name: 'modify_meubles', methods: ['PUT'])] //  La route pour modifier un meuble avec méthode PUT
+    #[Route('/change-meubles/{id}', name: 'modify_meubles', methods: ['PUT', 'GET'])] //  La route pour modifier un meuble avec méthode PUT
     public function modify_meubles(EntityManagerInterface $entityManager, string $id): JsonResponse
     {
         // On cherche le meuble en utilisant l'ID passé dans l'URL
@@ -102,7 +103,7 @@ public function listMeubles(MeublesRepository $meublesRepository): Response
     }
 
     // 3. Supprimer un meuble de la base de données
-    #[Route('/remove-meubles/{id}', name: 'remove_meubles', methods: ['DELETE'])] // La route pour supprimer un meuble avec methode DELETE
+    #[Route('/remove-meubles/{id}', name: 'remove_meubles', methods: ['DELETE','GET'])] // La route pour supprimer un meuble avec methode DELETE
     public function remove_meubles(EntityManagerInterface $entityManager, string $id): JsonResponse
     {
         // On cherche le meuble dans la base de données avec l'ID fourni
