@@ -28,6 +28,31 @@ public function listMeubles(MeublesRepository $meublesRepository): JsonResponse
     ]);
 }
 
+#[Route('meubles/{id}', name: 'each_meuble')] // 
+public function eachMeubles (EntityManagerInterface $entityManager, string $id) {
+
+    $meuble = $entityManager->getRepository(Meubles::class)->find($id);
+
+    $meuble->getId();
+    $meuble->getType();
+    $meuble->getPrix();
+    $meuble->getMatiere();
+    $meuble->getCouleur();
+    $meuble->getDimensions();
+    $meuble->getPhotos();
+
+
+    return new JsonResponse([
+        'id' => $meuble->getId(), // Retourne l'ID du meuble inséré
+            'type' => $meuble->getType(), // Type du meuble
+            'prix' => $meuble->getPrix(), // Prix du meuble
+            'couleur' => $meuble->getCouleur(), // Couleur du meuble
+            'matiere' => $meuble->getMatiere(), // Matière du meuble
+            'dimensions' => $meuble->getDimensions(), // Dimensions du meuble
+            'images' => $meuble->getPhotos(), // Image(s) du meuble
+            ], Response::HTTP_NOT_FOUND);
+
+}
 
     // 1. Ajouter un meuble à la base de données
     #[Route('/add-meubles', name: 'create_meubles', methods: ['POST', 'GET'])] // La route pour ajouter un meuble avec méthode POST
