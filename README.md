@@ -30,6 +30,6 @@ public/ – Dossier public (point d’entrée HTTP)
 tests/ – Tests unitaires
 
 ## Partie Front
-Le dépôt du Front Vue.js est à cloner séparément.
+Le dépôt du Front Vue.js est à cloner séparément sur https://github.com/terence-da-conceicao/Vente2Meuble-Front
 Il consomme cette API Symfony via des requêtes HTTP.
 
